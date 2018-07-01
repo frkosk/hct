@@ -1,3 +1,8 @@
-export const ADD_USER = 'ADD_USER';
+export const ADD_USER_REQUEST = 'ADD_USER_REQUEST';
+export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
+
 export const FETCH_USERS = 'FETCH_USERS';
+export const RECEIVE_USERS = 'RECEIVE_USERS';
+
 export const FETCH_ORDER = 'FETCH_ORDER';
+export const RECEIVE_ORDER = 'RECEIVE_ORDER';

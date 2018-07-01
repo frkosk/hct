@@ -1,62 +1,43 @@
-import { ADD_USER, FETCH_USERS, FETCH_ORDER } from './types';
+import { RECEIVE_USERS, RECEIVE_ORDER, ADD_USER_SUCCESS } from './types';
 import axios from 'axios';
 
 const USERS_API_URL = 'http://private-36f1e-contactstest.apiary-mock.com/contacts';
 
-export const fetchUsers = (users) => {
-  return {
-    type: FETCH_USERS,
-    users: users.items
-  }
+// fetch users
+export const fetchUsers = async () => {
+  return axios.get(USERS_API_URL)
+    .then(response => {
+      return response.data.items;
+    })
+    .catch(error => {
+      throw(error);
+    });
 };
 
-export const fetchAllUsers = () => {
-  return (dispatch) => {
-    return axios.get(USERS_API_URL)
-      .then(response => {
-        dispatch(fetchUsers(response.data))
-      })
-      .catch(error => {
-        throw(error);
-      });
-  };
-};
+export const receiveUsersData = data => ({ type: RECEIVE_USERS, data });
 
-export const dispatchOrder = (order) => {
-  return {
-    type: FETCH_ORDER,
-    order : order.items
-  }
-}
-
+// fetch order
 export const fetchOrder = (id) => {
-  return(dispatch) => {
-    return axios.get(`${USERS_API_URL}/${id}/order`)
-      .then(response => {
-        dispatch(dispatchOrder(response.data))
-      })
-      .catch(error => {
-        throw(error);
-      });
-  }
+ return axios.get(`${USERS_API_URL}/${id}/order`)
+    .then(response => {
+      return response.data.items;
+    })
+    .catch(error => {
+      throw(error);
+    });
 };
 
+export const receiveOrdersData = data => ({ type: RECEIVE_ORDER, data });
+
+// add user
 export const pushUserAsync = (user) => {
-  return {
-    type: ADD_USER,
-    users: user
-  }
+  return axios.post(USERS_API_URL, JSON.stringify(user))
+    .then(response => {
+      return response.status;
+    })
+    .catch(error => {
+      throw(error);
+    });
 }
 
-export const pushUser = (user) => {
-  return dispatch => {
-    console.log(user)
-    return axios.post(USERS_API_URL, JSON.stringify(user))
-      .then(response => {
-        user.id = Date.now();
-        // pripajam id aby to malo nejaké id ked uz api nic nevracia
-        dispatch(pushUserAsync(user));
-      });
-  }
-
-}
+export const pushUserSucces = data => ({ type: ADD_USER_SUCCESS, data });

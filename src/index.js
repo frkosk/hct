@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from "redux-saga";
 import { Provider } from 'react-redux';
 
 import rootReducer from './reducers';
-import { fetchAllUsers } from './actions/index';
+import mySagas from './sagas';
 
 import UserList from './containers/UserList';
 import UserOrder from './containers/UserOrder';
@@ -13,11 +13,17 @@ import AddUser from './containers/AddUser';
 import Nav from './components/Nav';
 
 import registerServiceWorker from './registerServiceWorker';
-
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
-store.dispatch(fetchAllUsers());
+// create the saga middleware
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(sagaMiddleware)
+);
+
+sagaMiddleware.run( mySagas );
 
 class App extends Component {
   render() {

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import ReeValidate from 'ree-validate';
 import classnames from 'classnames';
-import { pushUser } from '../actions';
 
 class AddUser extends Component {
 
@@ -99,9 +97,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({
-  pushUser : pushUser
-  }, dispatch);
+  return {
+    pushUser : user => dispatch({ type: "ADD_USER_REQUEST", user })
+  }
 };
 
 export default connect (
